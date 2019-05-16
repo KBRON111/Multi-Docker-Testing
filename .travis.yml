@@ -15,7 +15,7 @@ after_success:
   - docker build -t kbron111/multi-server ./server
   - docker build -t kbron111/multi-worker ./worker
   # Login to docker...
-  - docker --username "$DOCKER_ID" --password "$DOCKER_PASSWORD"
+  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_ID" --password-stdin
   # ...then send them off to Docker Hub
   - docker push kbron111/multi-client
   - docker push kbron111/multi-nginx
