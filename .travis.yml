@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t kbron111/testing -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run kbron111/testing npm test -- --coverage
+
+after_success:
+  - docker build -t kbron111/multi-client ./client
+  - docker build -t kbron111/multi-nginx ./nginx
+  - docker build -t kbron111/multi-server ./server
+  - docker build -t kbron111/multi-worker ./worker
+  # Login to docker...
+  - docker --username "$DOCKER_ID" --password "$DOCKER_PASSWORD"
+  # ...then send them off to Docker Hub
+  - docker push kbron111/multi-client
+  - docker push kbron111/multi-nginx
+  - docker push kbron111/multi-server
+  - docker push kbron111/multi-worker
