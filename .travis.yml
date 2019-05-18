@@ -21,3 +21,16 @@ after_success:
   - docker push kbron111/multi-nginx
   - docker push kbron111/multi-server
   - docker push kbron111/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-2
+  app: complexfibcalc
+  env: Complexfibcalc-env
+  bucket_name: elasticbeanstalk-us-east-2-117410519568
+  bucket_path: docker-multi
+  on:
+    branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key:
+      secure: $AWS_SECRET_KEY
